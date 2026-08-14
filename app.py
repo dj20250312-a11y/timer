@@ -1,17 +1,16 @@
 import random
 import streamlit as st
 
-# 1. 페이지 기본 설정 (반응형 레이아웃 및 타이틀)
+# 1. 페이지 기본 설정
 st.set_page_config(
-    page_title="🎵 멜론 차트 & 밴드·인디 추천기",
+    page_title="🎵 2026 멜론 차트 & 밴드·인디 추천기",
     page_icon="🎵",
-    layout="centered"  # 중앙 정렬 레이아웃
+    layout="centered"
 )
 
-# 2. CSS 스타일 적용 (반응형 카드 디자인, clamp()를 활용한 폰트 크기 조절)
+# 2. CSS 스타일 적용
 st.markdown("""
 <style>
-    /* 메인 음악 카드 스타일 */
     .song-card {
         background-color: #ffffff;
         border-radius: 20px;
@@ -23,18 +22,16 @@ st.markdown("""
         border: 1px solid #e0e0e0;
     }
     
-    /* 화면 크기에 맞춰 반응형으로 크기가 변하는 노래 제목 텍스트 */
     .song-title-display {
         font-size: clamp(1.8rem, 6vw, 3.2rem);
         font-weight: 800;
-        color: #00cd3c; /* 멜론 대표 초록색 */
+        color: #00cd3c;
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
         line-height: 1.2;
         margin: 15px 0 5px 0;
         word-break: keep-all;
     }
 
-    /* 가수명 텍스트 */
     .artist-display {
         font-size: clamp(1.1rem, 3.5vw, 1.8rem);
         font-weight: 600;
@@ -42,7 +39,6 @@ st.markdown("""
         margin-bottom: 15px;
     }
     
-    /* 카테고리 뱃지 */
     .chart-badge {
         display: inline-block;
         background-color: #e6f9ed;
@@ -53,7 +49,6 @@ st.markdown("""
         font-size: 0.95rem;
     }
 
-    /* 버튼 모바일 최적화 및 스타일 개선 */
     .stButton > button {
         width: 100%;
         border-radius: 12px;
@@ -63,9 +58,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. 2026년 7~8월 최신 차트 및 한로로 곡이 수록된 데이터베이스
+# 3. 신뢰할 수 있는 데이터베이스 (2026년 7~8월 차트 및 실제 발매 곡 기준)
 MELON_DATABASE = {
-    "☀️ 2026년 7~8월 핫트렌드": [
+    "☀️ 2026 7~8월 핫트렌드": [
         {"title": "REDRED", "artist": "CORTIS (코르티스)", "genre": "댄스/팝", "album": "REDRED", "year": 2026},
         {"title": "BANG BANG", "artist": "IVE (아이브)", "genre": "댄스", "album": "BANG BANG", "year": 2026},
         {"title": "SWIM", "artist": "방탄소년단 (BTS)", "genre": "R&B/Pop", "album": "SWIM", "year": 2026},
@@ -75,14 +70,14 @@ MELON_DATABASE = {
         {"title": "캐치 캐치 (Catch Catch)", "artist": "YENA (최예나)", "genre": "댄스", "album": "Catch Catch", "year": 2026},
         {"title": "기쁨, 슬픔, 아름다운 마음", "artist": "AKMU (악뮤)", "genre": "발라드", "album": "낙원", "year": 2026},
     ],
-    "🎸 밴드 & 인디 (한로로 Special)": [
-        {"title": "입춘 (자랑)", "artist": "한로로 (HANRORO)", "genre": "인디 록", "album": "입춘", "year": 2022},
-        {"title": "정돈 (Clean)", "artist": "한로로 (HANRORO)", "genre": "모던 록", "album": "정돈", "year": 2023},
-        {"title": "비틀비틀", "artist": "한로로 (HANRORO)", "genre": "인디 팝/록", "album": "비틀비틀", "year": 2023},
+    "🎸 밴드 & 인디": [
+        {"title": "입춘", "artist": "한로로", "genre": "인디 록", "album": "입춘", "year": 2022},
+        {"title": "사랑하게 될 거야", "artist": "한로로", "genre": "인디 록", "album": "이상비행", "year": 2023},
+        {"title": "자처", "artist": "한로로", "genre": "인디 록", "album": "자처", "year": 2023},
         {"title": "고민중독", "artist": "QWER", "genre": "밴드/록", "album": "MANITO", "year": 2024},
         {"title": "주저하는 연인들을 위해", "artist": "잔나비", "genre": "인디/록", "album": "전설", "year": 2019},
         {"title": "Tik Tak Tok (feat. So!YoON!)", "artist": "실리카겔", "genre": "사이키델릭 록", "album": "POWER AND BANE", "year": 2023},
-        {"title": "wave to earth", "artist": "Bad (웨이브투어스)", "genre": "인디 팝/록", "album": "0.1 flaws and all.", "year": 2023},
+        {"title": "Bad", "artist": "wave to earth", "genre": "인디 팝/록", "album": "0.1 flaws and all.", "year": 2023},
         {"title": "개화 (Flowering)", "artist": "LUCY (루시)", "genre": "인디 팝", "album": "PANORAMA", "year": 2020},
     ],
     "🔥 대중적인 인기 가요": [
@@ -102,26 +97,24 @@ MELON_DATABASE = {
     ]
 }
 
-# 4. 세션 상태(st.session_state) 초기화
+# 4. 세션 상태 초기화
 if "selected_chart" not in st.session_state:
-    st.session_state.selected_chart = "☀️ 2026년 7~8월 핫트렌드"  # 기본 선택 카테고리
+    st.session_state.selected_chart = "☀️ 2026 7~8월 핫트렌드"
 if "current_song" not in st.session_state:
-    st.session_state.current_song = None                          # 현재 추천된 노래
+    st.session_state.current_song = None
 if "favorites" not in st.session_state:
-    st.session_state.favorites = []                               # 즐겨찾기 리스트
+    st.session_state.favorites = []
 if "recommend_count" not in st.session_state:
-    st.session_state.recommend_count = 0                          # 추천 횟수 카운터
+    st.session_state.recommend_count = 0
 
-# 5. 제어 함수들
+# 5. 제어 함수
 def recommend_song():
-    """선택한 카테고리에서 무작위 노래 추천"""
     chart_list = MELON_DATABASE.get(st.session_state.selected_chart, [])
     if chart_list:
         st.session_state.current_song = random.choice(chart_list)
         st.session_state.recommend_count += 1
 
 def add_to_favorites():
-    """현재 추천된 노래를 즐겨찾기에 추가"""
     if st.session_state.current_song:
         song = st.session_state.current_song
         if song not in st.session_state.favorites:
@@ -131,14 +124,13 @@ def add_to_favorites():
             st.warning("이미 즐겨찾기에 추가된 노래입니다!")
 
 def clear_favorites():
-    """즐겨찾기 보관함 초기화"""
     st.session_state.favorites = []
 
-# 6. UI 구성 - 앱 제목
+# 6. UI 구성
 st.title("🎵 멜론 차트 & 밴드·인디 추천기")
-st.write("2026년 7~8월 최신 차트부터 한로로 등 감성 넘치는 밴드·인디곡까지 완벽 추천!")
+st.write("2026년 7~8월 최신 차트부터 인디/밴드 명곡까지 추천해 드립니다!")
 
-# 7. 카테고리 빠른 선택 버튼
+# 7. 차트 빠른 선택 버튼
 st.subheader("⚡ 음악 장르/차트 선택")
 chart_keys = list(MELON_DATABASE.keys())
 q_col1, q_col2, q_col3, q_col4 = st.columns(4)
@@ -148,7 +140,7 @@ with q_col1:
         st.session_state.selected_chart = chart_keys[0]
         recommend_song()
 with q_col2:
-    if st.button("🎸 밴드·한로로", use_container_width=True):
+    if st.button("🎸 밴드 & 인디", use_container_width=True):
         st.session_state.selected_chart = chart_keys[1]
         recommend_song()
 with q_col3:
@@ -160,7 +152,7 @@ with q_col4:
         st.session_state.selected_chart = chart_keys[3]
         recommend_song()
 
-# 8. 셀렉트 박스 필터 옵션
+# 8. 셀렉트 박스
 st.markdown("---")
 selected_category = st.selectbox(
     "🎧 현재 탐색 중인 장르/차트",
@@ -170,11 +162,10 @@ selected_category = st.selectbox(
 )
 st.session_state.selected_chart = selected_category
 
-# 최초 진입 시 기본 추천 곡 설정
 if st.session_state.current_song is None:
     recommend_song()
 
-# 9. 실시간 노래 추천 카드 표시 영역 (st.fragment로 부분 리프레시)
+# 9. 실시간 노래 추천 카드
 @st.fragment
 def song_display_fragment():
     song = st.session_state.current_song
@@ -186,7 +177,6 @@ def song_display_fragment():
         st.markdown(f'<div class="song-title-display">{song["title"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="artist-display">🎤 {song["artist"]}</div>', unsafe_allow_html=True)
         
-        # 상세 정보 표시 (앨범, 장르, 발매년도)
         info_col1, info_col2, info_col3 = st.columns(3)
         with info_col1:
             st.caption("💿 앨범")
@@ -202,15 +192,13 @@ def song_display_fragment():
         
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 추천을 5번 이상 받을 때마다 축하 풍선 효과
     if st.session_state.recommend_count > 0 and st.session_state.recommend_count % 5 == 0:
         st.balloons()
         st.success(f"🎉 음악 탐험가! 벌써 {st.session_state.recommend_count}번째 곡을 추천받으셨어요!")
 
-# 노래 디스플레이 출력
 song_display_fragment()
 
-# 10. 추천 제어 버튼 (다시 추천받기 / 즐겨찾기)
+# 10. 추천 제어 버튼
 btn_col1, btn_col2 = st.columns(2)
 
 with btn_col1:
@@ -219,7 +207,7 @@ with btn_col1:
 with btn_col2:
     st.button("❤️ 내 보관함에 담기", on_click=add_to_favorites, use_container_width=True)
 
-# 11. 내 즐겨찾기 보관함
+# 11. 즐겨찾기 보관함
 st.markdown("---")
 st.subheader("📁 내가 담은 추천 곡 보관함")
 

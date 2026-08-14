@@ -3,7 +3,7 @@ import streamlit as st
 
 # 1. 페이지 기본 설정 (반응형 레이아웃 및 타이틀)
 st.set_page_config(
-    page_title="🎵 나만의 멜론 차트 노래 추천기",
+    page_title="🎵 2026 멜론 차트 노래 추천기",
     page_icon="🎵",
     layout="centered"  # 중앙 정렬 레이아웃
 )
@@ -63,38 +63,38 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. 데이터베이스 샘플 (외부 API 대신 내장 모의 멜론 차트 데이터 사용)
+# 3. 2026년 기준 멜론 차트 데이터베이스
 MELON_DATABASE = {
-    "🔥 멜론 TOP100": [
-        {"title": "Accendio", "artist": "IVE (아이브)", "genre": "댄스", "album": "IVE SWITCH", "year": 2024},
-        {"title": "Supernova", "artist": "aespa", "genre": "댄스", "album": "Armageddon", "year": 2024},
-        {"title": "How Sweet", "artist": "NewJeans", "genre": "댄스", "album": "How Sweet", "year": 2024},
-        {"title": "Spot! (feat. JENNIE)", "artist": "지코 (ZICO)", "genre": "랩/힙합", "album": "SPOT!", "year": 2024},
-        {"title": "주저하는 연인들을 위해", "artist": "잔나비", "genre": "인디/록", "album": "전설", "year": 2019},
+    "🔥 2026 TOP100": [
+        {"title": "REDRED", "artist": "CORTIS (코르티스)", "genre": "댄스/팝", "album": "REDRED", "year": 2026},
+        {"title": "BANG BANG", "artist": "IVE (아이브)", "genre": "댄스", "album": "BANG BANG", "year": 2026},
+        {"title": "SWIM", "artist": "방탄소년단 (BTS)", "genre": "R&B/Pop", "album": "SWIM", "year": 2026},
+        {"title": "It's Me", "artist": "ILLIT (아일릿)", "genre": "댄스", "album": "It's Me", "year": 2026},
+        {"title": "갑자기 (Suddenly)", "artist": "I.O.I (아이오아이)", "genre": "댄스/발라드", "album": "Re:UNION", "year": 2026},
     ],
-    "☀️ 일간 핫트렌드": [
-        {"title": "Small girl (feat. 도경수)", "artist": "이영지", "genre": "랩/힙합", "album": "16 FANTASY", "year": 2024},
-        {"title": "Magnetic", "artist": "ILLIT (아일릿)", "genre": "댄스", "album": "SUPER REAL ME", "year": 2024},
-        {"title": "첫 만남은 계획대로 되지 않아", "artist": "TWS (투어스)", "genre": "댄스", "album": "Sparkling Blue", "year": 2024},
-        {"title": "Bam Yang Gang (밤양갱)", "artist": "비비 (BIBI)", "genre": "R&B/Soul", "album": "밤양갱", "year": 2024},
+    "☀️ 2026 핫트렌드": [
+        {"title": "소문의 낙원", "artist": "AKMU (악뮤)", "genre": "인디/포크", "album": "낙원", "year": 2026},
+        {"title": "캐치 캐치 (Catch Catch)", "artist": "YENA (최예나)", "genre": "댄스", "album": "Catch Catch", "year": 2026},
+        {"title": "기쁨, 슬픔, 아름다운 마음", "artist": "AKMU (악뮤)", "genre": "발라드", "album": "낙원", "year": 2026},
+        {"title": "Supernova", "artist": "aespa", "genre": "댄스", "album": "Armageddon", "year": 2024},
     ],
     "🎸 장르별 랭킹": [
-        {"title": " 사건의 지평선", "artist": "윤하 (YOUNHA)", "genre": "록/메탈", "album": "END THEORY", "year": 2022},
+        {"title": "SWIM", "artist": "방탄소년단 (BTS)", "genre": "R&B/Soul", "album": "SWIM", "year": 2026},
+        {"title": "소문의 낙원", "artist": "AKMU (악뮤)", "genre": "인디/록", "album": "낙원", "year": 2026},
+        {"title": "Small girl (feat. 도경수)", "artist": "이영지", "genre": "랩/힙합", "album": "16 FANTASY", "year": 2024},
         {"title": "Love wins all", "artist": "아이유 (IU)", "genre": "발라드", "album": "The Winning", "year": 2024},
-        {"title": "에피소드", "artist": "이무진", "genre": "발라드", "album": "에피소드", "year": 2023},
-        {"title": "To. X", "artist": "태연 (TAEYEON)", "genre": "R&B/Soul", "album": "To. X", "year": 2023},
     ],
-    "📼 추억의 차트": [
+    "📼 명곡 레전드": [
+        {"title": "How Sweet", "artist": "NewJeans", "genre": "댄스", "album": "How Sweet", "year": 2024},
+        {"title": "Accendio", "artist": "IVE (아이브)", "genre": "댄스", "album": "IVE SWITCH", "year": 2024},
         {"title": "Dynamite", "artist": "방탄소년단", "genre": "댄스", "album": "Dynamite", "year": 2020},
-        {"title": "Rollin' (롤린)", "artist": "브레이브걸스", "genre": "댄스", "album": "Rollin'", "year": 2017},
-        {"title": "아모르 파티", "artist": "김연자", "genre": "트롯", "album": "아모르 파티", "year": 2013},
-        {"title": "시든 꽃에 물을 주듯", "artist": "HYNN (박혜원)", "genre": "발라드", "album": "LET ME OUT", "year": 2019},
+        {"title": "주저하는 연인들을 위해", "artist": "잔나비", "genre": "인디/록", "album": "전설", "year": 2019},
     ]
 }
 
-# 4. 세션 상태(st.session_state) 초기화 (변수가 없으면 새로 생성)
+# 4. 세션 상태(st.session_state) 초기화
 if "selected_chart" not in st.session_state:
-    st.session_state.selected_chart = "🔥 멜론 TOP100"   # 기본 เลือก 차트
+    st.session_state.selected_chart = "🔥 2026 TOP100"  # 기본 선택 차트
 if "current_song" not in st.session_state:
     st.session_state.current_song = None                # 현재 추천된 노래
 if "favorites" not in st.session_state:
@@ -102,7 +102,7 @@ if "favorites" not in st.session_state:
 if "recommend_count" not in st.session_state:
     st.session_state.recommend_count = 0                # 추천 횟수 카운터
 
-# 5. 제어 함수들 (버튼 클릭 시 실행)
+# 5. 제어 함수들
 def recommend_song():
     """선택한 차트 카테고리에서 무작위 노래 추천"""
     chart_list = MELON_DATABASE.get(st.session_state.selected_chart, [])
@@ -114,7 +114,6 @@ def add_to_favorites():
     """현재 추천된 노래를 즐겨찾기에 추가"""
     if st.session_state.current_song:
         song = st.session_state.current_song
-        # 중복 저장 방지
         if song not in st.session_state.favorites:
             st.session_state.favorites.append(song)
             st.toast(f"❤️ [{song['title']}] 곡이 보관함에 담겼습니다!", icon="🎵")
@@ -126,8 +125,8 @@ def clear_favorites():
     st.session_state.favorites = []
 
 # 6. UI 구성 - 앱 제목
-st.title("🎵 나만의 멜론 차트 노래 추천기")
-st.write("지금 당신의 기분에 딱 맞는 노래를 멜론 차트별로 추천해 드립니다!")
+st.title("🎵 2026 멜론 차트 노래 추천기")
+st.write("2026년 올해 최신 인기가요부터 장르별 명곡까지 실시간으로 추천해 드립니다!")
 
 # 7. 차트 테마 빠른 선택 버튼
 st.subheader("⚡ 멜론 차트 선택")
@@ -135,7 +134,7 @@ chart_keys = list(MELON_DATABASE.keys())
 q_col1, q_col2, q_col3, q_col4 = st.columns(4)
 
 with q_col1:
-    if st.button("🔥 TOP100", use_container_width=True):
+    if st.button("🔥 2026 TOP100", use_container_width=True):
         st.session_state.selected_chart = chart_keys[0]
         recommend_song()
 with q_col2:
@@ -147,7 +146,7 @@ with q_col3:
         st.session_state.selected_chart = chart_keys[2]
         recommend_song()
 with q_col4:
-    if st.button("📼 추억차트", use_container_width=True):
+    if st.button("📼 명곡레전드", use_container_width=True):
         st.session_state.selected_chart = chart_keys[3]
         recommend_song()
 
@@ -165,7 +164,7 @@ st.session_state.selected_chart = selected_category
 if st.session_state.current_song is None:
     recommend_song()
 
-# 9. 실시간 노래 추천 카드 표시 영역 (st.fragment로 리프레시 관리)
+# 9. 실시간 노래 추천 카드 표시 영역 (st.fragment로 부분 리프레시)
 @st.fragment
 def song_display_fragment():
     song = st.session_state.current_song
@@ -212,11 +211,11 @@ with btn_col2:
 
 # 11. 내 즐겨찾기 보관함
 st.markdown("---")
-st.subheader("📁 내가 담은 노래 보관함")
+st.subheader("📁 내가 담은 2026 추천 곡 보관함")
 
 if st.session_state.favorites:
     for idx, fav in enumerate(st.session_state.favorites, 1):
-        st.text(f"{idx}. {fav['title']} - {fav['artist']} ({fav['genre']})")
+        st.text(f"{idx}. {fav['title']} - {fav['artist']} ({fav['year']}년 / {fav['genre']})")
     
     if st.button("🗑️ 보관함 비우기"):
         clear_favorites()
